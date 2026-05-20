@@ -1,0 +1,47 @@
+@model List<AutoOglasi.Models.Vehicle>
+
+@{
+    ViewData["Title"] = "Lista vozila";
+}
+
+<h2 class="mb-4">Svi oglasi</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+@if (!Model.Any())
+{
+    <p>Nema oglasa trenutno.</p>
+}
+else
+{
+    <div class="row">
+        @foreach (var v in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    @if (v.Slike.Any())
+                    {
+                        <img src="@v.Slike.First()" class="card-img-top"
+                             style="height:200px; object-fit:cover;" alt="Slika vozila" />
+                    }
+                    else
+                    {
+                        <div class="bg-secondary text-white d-flex align-items-center
+                                    justify-content-center" style="height:200px;">
+                            <span>Nema slike</span>
+                        </div>
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@v.Marka @v.Model (@v.Godiste)</h5>
+                        <p class="card-text text-success fw-bold">@v.Cena.ToString("N0") €</p>
+                        <a asp-action="Details" asp-route-id="@v.Id"
+                           class="btn btn-primary w-100">Pogledaj oglas</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

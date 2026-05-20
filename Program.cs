@@ -4,7 +4,12 @@ using Microsoft.AspNetCore.Identity;
 using AspNetCore.Identity.MongoDbCore.Extensions;
 using AspNetCore.Identity.MongoDbCore.Models;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+{
+    Args = args,
+    ContentRootPath = Directory.GetCurrentDirectory(),
+    WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")
+});
 
 // MongoDB podesavanja
 builder.Services.Configure<MongoDbSettings>(
