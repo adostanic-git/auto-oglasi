@@ -1,8 +1,45 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@{
+    ViewData["Title"] = "Meni";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8 text-center mb-5">
+        <h2 class="fw-bold">Dobrodošli, @User.Identity?.Name</h2>
+        <p class="text-muted">Izaberite jednu od opcija ispod.</p>
+    </div>
+</div>
+
+<div class="row justify-content-center g-4">
+    <div class="col-md-4">
+        <a asp-controller="Vehicle" asp-action="Index" class="text-decoration-none">
+            <div class="card menu-card shadow-sm text-center p-4 h-100">
+                <div class="menu-icon mb-3">🚗</div>
+                <h4 class="fw-bold">Lista vozila</h4>
+                <p class="text-muted mb-0">Pregledajte sve oglase za vozila.</p>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-4">
+        <a asp-controller="Vehicle" asp-action="Create" class="text-decoration-none">
+            <div class="card menu-card shadow-sm text-center p-4 h-100">
+                <div class="menu-icon mb-3">📝</div>
+                <h4 class="fw-bold">Postavi oglas</h4>
+                <p class="text-muted mb-0">Unesite podatke o vozilu i postavite oglas.</p>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-4">
+        <form asp-controller="Account" asp-action="Logout" method="post">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn w-100 border-0 p-0">
+                <div class="card menu-card menu-card--logout shadow-sm text-center p-4 h-100">
+                    <div class="menu-icon mb-3">🚪</div>
+                    <h4 class="fw-bold">Izlaz</h4>
+                    <p class="text-muted mb-0">Odjavite se sa naloga.</p>
+                </div>
+            </button>
+        </form>
+    </div>
 </div>
