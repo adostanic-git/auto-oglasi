@@ -1,46 +1,59 @@
 @model List<AutoOglasi.Models.Vehicle>
-
 @{
     ViewData["Title"] = "Lista vozila";
 }
 
-<h2 class="mb-4">Svi oglasi</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-0">Sva vozila</h2>
+    <div class="d-flex gap-2">
+        @if (TempData["Success"] != null)
+        {
+            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">← Nazad na meni</a>
+        }
+        <a asp-action="Create" class="btn btn-primary">+ Postavi oglas</a>
+    </div>
+</div>
 
 @if (TempData["Success"] != null)
 {
-    <div class="alert alert-success">@TempData["Success"]</div>
+    <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
 }
 
 @if (!Model.Any())
 {
-    <p>Nema oglasa trenutno.</p>
+    <div class="text-center py-5">
+        <p class="text-muted fs-5">Nema dostupnih oglasa.</p>
+        <a asp-action="Create" class="btn btn-primary mt-2">Budi prvi koji postavlja oglas</a>
+    </div>
 }
 else
 {
-    <div class="row">
+    <div class="row g-4">
         @foreach (var v in Model)
         {
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 shadow-sm">
-                    @if (v.Slike.Any())
-                    {
-                        <img src="@v.Slike.First()" class="card-img-top"
-                             style="height:200px; object-fit:cover;" alt="Slika vozila" />
-                    }
-                    else
-                    {
-                        <div class="bg-secondary text-white d-flex align-items-center
-                                    justify-content-center" style="height:200px;">
-                            <span>Nema slike</span>
+            <div class="col-md-4 col-sm-6">
+                <a asp-action="Details" asp-route-id="@v.Id" class="text-decoration-none">
+                    <div class="card vehicle-card shadow-sm h-100">
+                        @if (v.Slike.Any())
+                        {
+                            <img src="@v.Slike.First()" class="card-img-top vehicle-thumb" alt="@v.Marka @v.Model" />
+                        }
+                        else
+                        {
+                            <div class="no-image d-flex align-items-center justify-content-center">
+                                <span class="text-muted">Nema slike</span>
+                            </div>
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold mb-1">@v.Marka @v.Model</h5>
+                            <p class="text-muted small mb-2">Godište: @v.Godiste</p>
+                            <p class="fw-bold text-primary fs-5 mb-0">@v.Cena.ToString("N0") €</p>
                         </div>
-                    }
-                    <div class="card-body">
-                        <h5 class="card-title">@v.Marka @v.Model (@v.Godiste)</h5>
-                        <p class="card-text text-success fw-bold">@v.Cena.ToString("N0") €</p>
-                        <a asp-action="Details" asp-route-id="@v.Id"
-                           class="btn btn-primary w-100">Pogledaj oglas</a>
                     </div>
-                </div>
+                </a>
             </div>
         }
     </div>

@@ -1,50 +1,58 @@
 @model AutoOglasi.Models.ViewModels.RegisterViewModel
-
 @{
     ViewData["Title"] = "Registracija";
+    Layout = "_Layout";
 }
 
 <div class="row justify-content-center mt-5">
-    <div class="col-md-4">
-        <div class="card shadow">
+    <div class="col-md-5">
+        <div class="card shadow-sm border-0">
             <div class="card-body p-4">
-                <h3 class="card-title text-center mb-4">Registracija</h3>
+                <h3 class="card-title text-center mb-4 fw-bold">Registracija</h3>
 
                 <form asp-action="Register" method="post">
-                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+                    @Html.AntiForgeryToken()
+
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small"></div>
 
                     <div class="mb-3">
-                        <label asp-for="ImeIPrezime" class="form-label">Ime i prezime</label>
-                        <input asp-for="ImeIPrezime" class="form-control" placeholder="Ime Prezime" />
-                        <span asp-validation-for="ImeIPrezime" class="text-danger"></span>
+                        <label asp-for="ImeIPrezime" class="form-label fw-semibold">Ime i prezime</label>
+                        <input asp-for="ImeIPrezime" class="form-control" placeholder="Marko Marković" autocomplete="name" />
+                        <span asp-validation-for="ImeIPrezime" class="text-danger small"></span>
                     </div>
 
                     <div class="mb-3">
-                        <label asp-for="Email" class="form-label">Email</label>
-                        <input asp-for="Email" class="form-control" placeholder="email@primer.com" />
-                        <span asp-validation-for="Email" class="text-danger"></span>
+                        <label asp-for="Email" class="form-label fw-semibold">Email</label>
+                        <input asp-for="Email" class="form-control" placeholder="vas@email.com" autocomplete="email" />
+                        <span asp-validation-for="Email" class="text-danger small"></span>
                     </div>
 
                     <div class="mb-3">
-                        <label asp-for="Lozinka" class="form-label">Lozinka</label>
-                        <input asp-for="Lozinka" class="form-control" placeholder="Minimum 6 karaktera" />
-                        <span asp-validation-for="Lozinka" class="text-danger"></span>
+                        <label asp-for="Lozinka" class="form-label fw-semibold">Lozinka</label>
+                        <input asp-for="Lozinka" class="form-control" placeholder="••••••••" autocomplete="new-password" />
+                        <span asp-validation-for="Lozinka" class="text-danger small"></span>
                     </div>
 
-                    <div class="mb-3">
-                        <label asp-for="PotvrdaLozinke" class="form-label">Potvrda lozinke</label>
-                        <input asp-for="PotvrdaLozinke" class="form-control" placeholder="Ponovite lozinku" />
-                        <span asp-validation-for="PotvrdaLozinke" class="text-danger"></span>
+                    <div class="mb-4">
+                        <label asp-for="PotvrdaLozinke" class="form-label fw-semibold">Potvrdi lozinku</label>
+                        <input asp-for="PotvrdaLozinke" class="form-control" placeholder="••••••••" autocomplete="new-password" />
+                        <span asp-validation-for="PotvrdaLozinke" class="text-danger small"></span>
                     </div>
 
-                    <button type="submit" class="btn btn-success w-100">Registruj se</button>
+                    <button type="submit" class="btn btn-primary w-100 fw-semibold">Registruj se</button>
                 </form>
 
-                <hr />
-                <p class="text-center mb-0">
-                    Već imate nalog? <a asp-action="Login">Prijavite se</a>
+                <hr class="my-4" />
+
+                <p class="text-center mb-0 small text-muted">
+                    Već imate nalog?
+                    <a asp-controller="Account" asp-action="Login" class="fw-semibold">Prijavite se</a>
                 </p>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

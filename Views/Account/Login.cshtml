@@ -1,38 +1,47 @@
 @model AutoOglasi.Models.ViewModels.LoginViewModel
-
 @{
     ViewData["Title"] = "Prijava";
+    Layout = "_Layout";
 }
 
 <div class="row justify-content-center mt-5">
-    <div class="col-md-4">
-        <div class="card shadow">
+    <div class="col-md-5">
+        <div class="card shadow-sm border-0">
             <div class="card-body p-4">
-                <h3 class="card-title text-center mb-4">Prijava</h3>
+                <h3 class="card-title text-center mb-4 fw-bold">Prijava</h3>
 
                 <form asp-action="Login" method="post">
-                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small"></div>
 
                     <div class="mb-3">
-                        <label asp-for="Email" class="form-label">Email</label>
-                        <input asp-for="Email" class="form-control" placeholder="email@primer.com" />
-                        <span asp-validation-for="Email" class="text-danger"></span>
+                        <label asp-for="Email" class="form-label fw-semibold">Email</label>
+                        <input asp-for="Email" class="form-control" placeholder="vas@email.com" autocomplete="email" />
+                        <span asp-validation-for="Email" class="text-danger small"></span>
                     </div>
 
-                    <div class="mb-3">
-                        <label asp-for="Lozinka" class="form-label">Lozinka</label>
-                        <input asp-for="Lozinka" class="form-control" placeholder="Unesite lozinku" />
-                        <span asp-validation-for="Lozinka" class="text-danger"></span>
+                    <div class="mb-4">
+                        <label asp-for="Lozinka" class="form-label fw-semibold">Lozinka</label>
+                        <input asp-for="Lozinka" class="form-control" placeholder="••••••••" autocomplete="current-password" />
+                        <span asp-validation-for="Lozinka" class="text-danger small"></span>
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-100">Prijavi se</button>
+                    <button type="submit" class="btn btn-primary w-100 fw-semibold">Prijavi se</button>
                 </form>
 
-                <hr />
-                <p class="text-center mb-0">
-                    Nemate nalog? <a asp-action="Register">Registrujte se</a>
+                <hr class="my-4" />
+
+                <p class="text-center mb-0 small text-muted">
+                    Nemate nalog?
+                    <a asp-controller="Account" asp-action="Register" class="fw-semibold">Registrujte se</a>
                 </p>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
