@@ -1,0 +1,38 @@
+@model AutoOglasi.Models.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Prijava";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-4">
+        <div class="card shadow">
+            <div class="card-body p-4">
+                <h3 class="card-title text-center mb-4">Prijava</h3>
+
+                <form asp-action="Login" method="post">
+                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label">Email</label>
+                        <input asp-for="Email" class="form-control" placeholder="email@primer.com" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Lozinka" class="form-label">Lozinka</label>
+                        <input asp-for="Lozinka" class="form-control" placeholder="Unesite lozinku" />
+                        <span asp-validation-for="Lozinka" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Prijavi se</button>
+                </form>
+
+                <hr />
+                <p class="text-center mb-0">
+                    Nemate nalog? <a asp-action="Register">Registrujte se</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

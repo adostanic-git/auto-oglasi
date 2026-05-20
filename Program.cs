@@ -1,8 +1,8 @@
 using AutoOglasi.Models;
 using AutoOglasi.Services;
 using Microsoft.AspNetCore.Identity;
-using AspNetCore.Identity.MongoDbCore.Infrastructure;
 using AspNetCore.Identity.MongoDbCore.Extensions;
+using AspNetCore.Identity.MongoDbCore.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +12,7 @@ builder.Services.Configure<MongoDbSettings>(
 
 // MongoDB Identity konfiguracija
 var mongoDbSettings = builder.Configuration
-    .GetSection("MongoDbSettings").Get<MongoDbSettings>();
+    .GetSection("MongoDbSettings").Get<AutoOglasi.Models.MongoDbSettings>();
 
 builder.Services.AddIdentity<ApplicationUser, MongoIdentityRole<Guid>>(options =>
 {
@@ -27,8 +27,15 @@ builder.Services.AddIdentity<ApplicationUser, MongoIdentityRole<Guid>>(options =
     mongoDbSettings.DatabaseName)
 .AddDefaultTokenProviders();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.LogoutPath = "/Account/Logout";
+    options.AccessDeniedPath = "/Account/Login";
+});
+
 // Registruj VehicleService
-builder.Services.AddSingleton<VehicleService>();
+builder.Services.AddScoped<VehicleService>();
 
 builder.Services.AddControllersWithViews();
 
