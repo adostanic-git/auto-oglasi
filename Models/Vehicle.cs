@@ -16,10 +16,7 @@ namespace AutoOglasi.Models
         public decimal Cena { get; set; }
         public string Opis { get; set; } = string.Empty;
 
-        // Lista putanja do slika
         public List<string> Slike { get; set; } = new();
-
-        // ID korisnika koji je postavio oglas
         public string KorisnikId { get; set; } = string.Empty;
     }
 }

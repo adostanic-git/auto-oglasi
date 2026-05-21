@@ -105,7 +105,6 @@ namespace AutoOglasi.Controllers
             if (vehicle.KorisnikId != GetUserId())
                 return Forbid();
 
-            // Uklanjanje označenih slika
             if (model.SlikeZaBrisanje != null && model.SlikeZaBrisanje.Count > 0)
             {
                 foreach (var slika in model.SlikeZaBrisanje)
@@ -115,7 +114,6 @@ namespace AutoOglasi.Controllers
                 }
             }
 
-            // Dodavanje novih slika
             if (model.NoveSlike != null && model.NoveSlike.Count > 0)
             {
                 var noveSacuvane = await SacuvajSlike(model.NoveSlike);
