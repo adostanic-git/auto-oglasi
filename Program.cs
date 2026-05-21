@@ -1,21 +1,17 @@
 using AutoOglasi.Models;
 using AutoOglasi.Services;
 using Microsoft.AspNetCore.Identity;
+using AspNetCore.Identity.MongoDbCore.Infrastructure;
 using AspNetCore.Identity.MongoDbCore.Extensions;
 using AspNetCore.Identity.MongoDbCore.Models;
 
-var builder = WebApplication.CreateBuilder(new WebApplicationOptions
-{
-    Args = args,
-    ContentRootPath = Directory.GetCurrentDirectory(),
-    WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")
-});
+var builder = WebApplication.CreateBuilder(args);
 
-// MongoDB podesavanja
-builder.Services.Configure<MongoDbSettings>(
+builder.Services.AddControllersWithViews();
+
+builder.Services.Configure<AutoOglasi.Models.MongoDbSettings>(
     builder.Configuration.GetSection("MongoDbSettings"));
 
-// MongoDB Identity konfiguracija
 var mongoDbSettings = builder.Configuration
     .GetSection("MongoDbSettings").Get<AutoOglasi.Models.MongoDbSettings>();
 
@@ -32,17 +28,20 @@ builder.Services.AddIdentity<ApplicationUser, MongoIdentityRole<Guid>>(options =
     mongoDbSettings.DatabaseName)
 .AddDefaultTokenProviders();
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
+    options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
+    options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+});
+
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Account/Login";
-    options.LogoutPath = "/Account/Logout";
     options.AccessDeniedPath = "/Account/Login";
 });
 
-// Registruj VehicleService
-builder.Services.AddScoped<VehicleService>();
-
-builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<VehicleService>();
 
 var app = builder.Build();
 
@@ -55,11 +54,15 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapStaticAssets();
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Account}/{action=Login}/{id?}");
+    pattern: "{controller=Account}/{action=Login}/{id?}")
+    .WithStaticAssets();
 
 app.Run();
